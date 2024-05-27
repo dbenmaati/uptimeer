@@ -1,0 +1,30 @@
+# Python related
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+
+# IDE files
+.vscode/
+.idea/
+
+# Django specific
+*.log
+*.pot
+db.sqlite3
+media/
+static/
+
+# Ignore migrations if you haven't already applied them
+*/migrations/
+__pycache__/__init__.pyc
+
+# Ignore local configuration
+local_settings.py
+
+# Ignore Docker related files if using Docker
+docker-compose.yml
+Dockerfile

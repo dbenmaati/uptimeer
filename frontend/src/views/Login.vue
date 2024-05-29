@@ -36,7 +36,7 @@
 
 <script setup>
   import { Button, FormControl } from 'frappe-ui'
-  import LoginBox from '../components/LoginBox.vue'
+  import LoginBox from '@/components/LoginBox.vue'
 
   import { onMounted, ref } from '@vue/runtime-core'
 

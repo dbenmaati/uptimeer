@@ -23,5 +23,5 @@
 </template>
 
 <script setup>
-  import FrappeLogo from '../components/Icons/FrappeLogo.vue'
+  import FrappeLogo from '@/components/Icons/FrappeLogo.vue'
 </script>

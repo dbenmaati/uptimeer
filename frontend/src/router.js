@@ -6,15 +6,12 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: () => import('./views/Login.vue'),
-        meta: {
-			hideSidebar: true,
-		},
     },
 
     {
-        path: '/Signup',
-        name: 'Signup',
-        component: () => import('./views/Signup.vue'),
+        path: '/register',
+        name: 'Register',
+        component: () => import('./views/Register.vue'),
     },
 
     {
@@ -27,6 +24,18 @@ const routes = [
         path: '/dashboard/sites',
         name: 'Sites',
         component: () => import('./views/dashboard/Sites.vue'),
+    },
+
+    // otherwise redirect to 404 //
+    {
+        path: '/page-not-found',
+        name: 'page-not-found',
+        component: () => import('./views/404-error.vue'),
+    },
+    
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/page-not-found' 
     },
 ]
 

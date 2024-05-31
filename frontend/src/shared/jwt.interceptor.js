@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import store from '@/stores/index'
+import router from '@/router'
 
 let baseURL = 'http://127.0.0.1:8000/api'
 
@@ -37,6 +38,7 @@ jwtInterceptor.interceptors.response.use(
             }).catch(() => {
                 //return Promise.reject(err);
                 store.dispatch('authUser/logoutUser')
+                router.push({name: 'Login'})
             });
 
         } else {

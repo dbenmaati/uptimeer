@@ -2,26 +2,24 @@ export default {
     namespaced: true,
     state: {
         user: {
-            first_name: null,
-            last_name: null,
+            username: null,
             email: null,
         }
     },
     mutations: {
-        storeUser(state, { first_name, last_name, email }) {
-            state.first_name = first_name
-            state.last_name = last_name
+        storeUser(state, { username, email }) {
+            state.username = username
             state.email = email
         }
     },
     actions: {
-        storeUser({commit}, { first_name, last_name, email }) {
-            commit('storeUser', { first_name, last_name, email })
+        storeUser({commit}, { username, email }) {
+            commit('storeUser', { username, email })
         },
     },
     getters: {
         fullName(state) {
-            return state.user.first_name + ' ' + state.user.last_name
+            return state.user.username
         }
     }
 }

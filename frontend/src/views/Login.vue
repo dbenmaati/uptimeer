@@ -20,7 +20,6 @@
 				autocomplete="current-password"
 				required
 			/>
-			<ErrorMessage :error="errorMessage" class="!mt-2" />
 			<Button
 				class="mt-4"
 				variant="solid"
@@ -30,19 +29,66 @@
 			>
 				Log in with email
 			</Button>
+			<br>
+			<ErrorMessage :message="errorMessage" style="text-align: center; font-size: 1.2em;" />	
 		</form>
 	</LoginBox>
 </template>
 
 <script setup>
-  import { Button, FormControl } from 'frappe-ui'
-  import LoginBox from '@/components/LoginBox.vue'
 
-  import { onMounted, ref } from '@vue/runtime-core'
+	import LoginBox from '@/components/LoginBox.vue';
 
-  const loggingIn = ref(null)
-  const email = ref(null)
-  const password = ref(null)
-  const errorMessage = ref(null)
-  const redirectRoute = ref(null)
+	import { Button, FormControl, ErrorMessage } from 'frappe-ui';
+	import { onMounted, ref, inject } from 'vue';
+
+	import store from '@/stores'
+	import router from '@/router'
+
+	const axios = inject('jwtInterceptor');
+
+	const loggingIn = ref(null);
+	const email = ref(null);
+	const password = ref(null);
+	const errorMessage = ref(null);
+
+	onMounted(() => {
+		if(store.state.authUser.accessToken) (
+			router.push({name: 'Dashboard'})
+		)
+	})
+
+	const makeLoginRequest = async () => {
+    if (!email.value || !password.value) {
+        errorMessage.value = 'Email and password are required.';
+        return;
+    }
+
+    try {
+        errorMessage.value = null;
+        loggingIn.value = true;
+
+        const data = {
+            email: email.value,
+            password: password.value
+        };
+
+        const response = await axios.post('/auth/login', data);
+
+        store.dispatch(
+            'authUser/storeToken',
+            { access: response.data.access, refresh: response.data.refresh },
+            { root: true }
+        );
+
+        router.push({ name: 'Dashboard' });
+
+    } catch (error) {
+        console.error('Login request failed');
+		errorMessage.value = 'Wrong Credentials';
+    } finally {
+        loggingIn.value = false;
+    }
+};
+
 </script>

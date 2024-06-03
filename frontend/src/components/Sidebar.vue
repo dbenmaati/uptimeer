@@ -1,11 +1,14 @@
 <template>
-	<div class="rg:w-60 flex w-14 flex-shrink-0 flex-col border-r border-gray-300 bg-white" v-if="currentRoute" >
+	<div
+		class="rg:w-60 flex w-14 flex-shrink-0 flex-col border-r border-gray-300 bg-white"
+		v-if="currentRoute"
+	>
 		<div class="flex flex-grow flex-col overflow-y-auto p-2.5">
 			<div class="rg:flex hidden flex-shrink-0 items-end text-sm text-gray-600">
-				<img src="../assets/insights-logo-new.svg" class="h-7" />
+				<img src="https://s4-recruiting.cdn.greenhouse.io/external_greenhouse_job_boards/logos/400/588/400/original/profile_pic.png?1665772600" class="h-7" />
 			</div>
 			<router-link to="/" class="rg:hidden flex cursor-pointer">
-				<img src="../assets/insights-logo-new.svg" class="rounded" />
+				<img src="https://s4-recruiting.cdn.greenhouse.io/external_greenhouse_job_boards/logos/400/588/400/original/profile_pic.png?1665772600" class="rounded" />
 			</router-link>
 
 			<div class="mt-4 flex flex-col">
@@ -18,15 +21,16 @@
 						class="w-full"
 					>
 						<template #body>
-							<div class="w-fit rounded border border-gray-100 bg-gray-800 px-2 py-1 text-xs text-white shadow-xl" >
-								TBD
+							<div class="w-fit rounded border border-gray-100 bg-gray-800 px-2 py-1 text-xs text-white shadow-xl">
+								{{ route.label }}
 							</div>
 						</template>
 
 						<router-link
 							:to="route.path"
-							:class="[ route.current
-									? 'bg-green-300/100'
+							:class="[
+								route.current
+									? 'bg-gray-200/70'
 									: 'text-gray-700 hover:bg-gray-50 hover:text-gray-800',
 								'rg:justify-start group flex w-full items-center justify-center rounded p-2 font-medium',
 							]"
@@ -43,23 +47,76 @@
 								]"
 							/>
 
-							<span class="rg:inline-block hidden">TBD</span>
+							<span class="rg:inline-block hidden">{{ route.label }}</span>
 						</router-link>
 					</Tooltip>
 				</nav>
 			</div>
 
-			
+			<div class="mt-auto flex flex-col items-center gap-2 text-base text-gray-600">
+				<Button variant="ghost" @click="open('https://docs.frappeinsights.com')">
+					<BookOpen class="h-4 text-gray-600" />
+				</Button>
+				<Dropdown
+					placement="left"
+					:options="[
+						{
+							label: 'Documentation',
+							icon: 'help-circle',
+							onClick: () => open('https://docs.frappeinsights.com'),
+						},
+						{
+							label: 'Join Telegram Group',
+							icon: 'message-circle',
+							onClick: () => open('https://t.me/frappeinsights'),
+						},
+						{
+							label: 'Help',
+							icon: 'life-buoy',
+							onClick: () => (showHelpDialog = true),
+						},
+						{
+							label: 'Logout',
+							icon: 'log-out',
+							onClick: () => Logout(),
+						},
+					]"
+				>
+					<template v-slot="{ open }">
+						<button
+							class="flex w-full items-center space-x-2 rounded p-1 text-left text-base font-medium"
+							:class="open ? 'bg-gray-300' : 'hover:bg-gray-200'"
+						>
+							<Avatar
+								size="xl"
+								:label='"session.user.full_name"'
+								:image='"https://pics.craiyon.com/2023-06-20/89f79a8dee744596981e7417b8a7ea1d.webp"'
+							/>
+							<span
+								class="rg:inline ml-2 hidden overflow-hidden text-ellipsis whitespace-nowrap"
+							>
+								diya
+							</span>
+							<FeatherIcon name="chevron-down" class="rg:inline hidden h-4 w-4" />
+						</button>
+					</template>
+				</Dropdown>
+			</div>
+
 		</div>
 	</div>
-
-	
 </template>
 
 <script setup>
-import { Avatar } from 'frappe-ui'
 
-import { createResource } from 'frappe-ui'
+import {
+	Button,
+	Tooltip,
+	Dropdown,
+	Avatar,
+	FeatherIcon,
+} from 'frappe-ui'
+
 import {
 	Book,
 	Database,
@@ -67,15 +124,17 @@ import {
 	HomeIcon,
 	LayoutPanelTop,
 	Settings,
-	User,
-	Users,
+	LogOut,
 	BookOpen,
 } from 'lucide-vue-next'
+
+
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import store from '@/stores'
+import router from '@/router'
 
 
-const showHelpDialog = ref(false)
 const sidebarItems = ref([
 	{
 		path: '/',
@@ -120,6 +179,7 @@ const sidebarItems = ref([
 	},
 ])
 
+
 const route = useRoute()
 const currentRoute = computed(() => {
 	sidebarItems.value.forEach((item) => {
@@ -130,5 +190,20 @@ const currentRoute = computed(() => {
 })
 
 const open = (url) => window.open(url, '_blank')
+
+const Logout = async () => {
+    try {
+        
+
+        //const response = await axios.post('/auth/login', data);
+
+        store.dispatch('authUser/logoutUser', {}, { root: true });
+
+        router.push({ name: 'Login' });
+
+    } catch (error) {
+        console.error('Logout Failed');
+    } 
+};
 
 </script>

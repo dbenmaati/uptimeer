@@ -30,7 +30,7 @@
 				Log in with email
 			</Button>
 			<br>
-			<ErrorMessage :message="errorMessage" style="text-align: center; font-size: 1.2em;" />	
+			<ErrorMessage :message="errorMessage" style="text-align: center; font-size: 1em;" />	
 		</form>
 	</LoginBox>
 </template>

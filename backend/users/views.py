@@ -23,7 +23,7 @@ class AccountTokenObtainPairViewSerializer(jwt_serializers.TokenObtainPairSerial
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['username'] = user.username
+        token['email'] = user.email
 
         return token
 

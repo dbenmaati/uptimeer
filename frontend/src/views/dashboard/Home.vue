@@ -1,13 +1,17 @@
 <template>
 <div class="flex flex-1 overflow-hidden text-base">
     <Sidebar />
-    <div class="flex flex-1 flex-col space-y-8 overflow-hidden bg-white p-6">
-        <div class="space-y-2">
-			<div class="text-3xl font-bold text-gray-900">
-				Hello, {{ $store.state.userData.email }} 👋
-			</div>
-			<div class="text-lg text-gray-600">Wed, 12</div>
-		</div>
+    <div class="flex flex-1 flex-col overflow-hidden">
+
+        <div class="flex flex-1 flex-col space-y-8 overflow-hidden bg-white p-6">
+            <div class="space-y-2">
+                <div class="text-3xl font-bold text-gray-900">
+                    Hello, {{ $store.state.userData.email }} 👋
+                </div>
+                <div class="text-lg text-gray-600">Wed, 12</div>
+            </div>
+        </div>
+        
     </div>
 </div>
 </template>

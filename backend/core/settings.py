@@ -38,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
-
     'rest_framework',
     "corsheaders",
     'rest_framework_simplejwt.token_blacklist',
+
+    'users',
+    'monitoring',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,9 @@ AUTH_USER_MODEL = 'users.Users'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
 }
 

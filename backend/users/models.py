@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-
 class UsersManager(BaseUserManager):
     def create_user(self, email, full_name, password=None):
         if not email:
@@ -28,7 +27,6 @@ class UsersManager(BaseUserManager):
         
         return user
 
-
 class Users(AbstractBaseUser):
     email = models.EmailField(max_length=60, unique=True)
     full_name = models.CharField(max_length=255, default=False)
@@ -40,12 +38,14 @@ class Users(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     last_login_at = models.DateTimeField(auto_now=True)
 
+    monitors = models.ManyToManyField('monitoring.Monitor', through='UserRole', related_name='users')
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('full_name',)
 
     objects = UsersManager()
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.email
     
     def has_perm(self, perm, obj=None):
@@ -53,3 +53,17 @@ class Users(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+class UserRole(models.Model):
+    EDIT = 'Edit'
+    VIEW = 'View'
+    ROLE_CHOICES = [
+        (EDIT, 'Edit'),
+        (VIEW, 'View'),
+    ]
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    monitor = models.ForeignKey('monitoring.Monitor', on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+
+    class Meta:
+        unique_together = ('user', 'monitor')

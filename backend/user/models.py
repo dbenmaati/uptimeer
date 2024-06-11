@@ -38,7 +38,7 @@ class Users(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
     last_login_at = models.DateTimeField(auto_now=True)
 
-    monitors = models.ManyToManyField('monitoring.Monitor', through='UserRole', related_name='users')
+    monitors = models.ManyToManyField('monitoring.Monitors', through='UsersRoles', related_name='user')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('full_name',)
@@ -52,9 +52,15 @@ class Users(AbstractBaseUser):
         return True
 
     def has_module_perms(self, app_label):
-        return True
+        return True   
 
-class UserRole(models.Model):
+    class Meta:
+        verbose_name = "User"  
+        verbose_name_plural = "Users"  
+
+
+
+class UsersRoles(models.Model):
     EDIT = 'Edit'
     VIEW = 'View'
     ROLE_CHOICES = [
@@ -62,8 +68,10 @@ class UserRole(models.Model):
         (VIEW, 'View'),
     ]
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    monitor = models.ForeignKey('monitoring.Monitor', on_delete=models.CASCADE)
+    monitor = models.ForeignKey('monitoring.Monitors', on_delete=models.CASCADE)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
     class Meta:
         unique_together = ('user', 'monitor')
+        verbose_name = "UsersRole"  
+        verbose_name_plural = "UsersRoles"  

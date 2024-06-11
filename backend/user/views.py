@@ -1,4 +1,4 @@
-from users import serializers
+from user import serializers
 from django.shortcuts import render
 from rest_framework import decorators as rest_decorators
 from rest_framework import permissions as rest_permissions

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Monitor
+from .models import Monitors
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('name', 'monitoring_type', 'request_type', 'is_active')
 
-admin.site.register(Monitor, UserAdmin)
+admin.site.register(Monitors, UserAdmin)

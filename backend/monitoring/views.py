@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from monitoring.serializers import MonitorSerializer
 
-from monitoring.models import Monitor
-from users.models import UserRole
+from monitoring.models import Monitors
+from user.models import UsersRoles
 
 
 class MonitorListCreate(generics.ListCreateAPIView):
@@ -14,11 +14,11 @@ class MonitorListCreate(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         monitor = serializer.save()
-        UserRole.objects.create(user=user, monitor=monitor, role=UserRole.EDIT)
+        UsersRoles.objects.create(user=user, monitor=monitor, role=UsersRoles.EDIT)
 
     def get_queryset(self):
         user = self.request.user
-        return Monitor.objects.filter(userrole__user=user)
+        return Monitors.objects.filter(usersroles__user=user)
 
 class MonitorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MonitorSerializer
@@ -26,4 +26,4 @@ class MonitorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Monitor.objects.filter(userrole__user=user)
+        return Monitors.objects.filter(usersroles__user=user)
